@@ -1,11 +1,16 @@
 const Joi = require("joi");
-
+const config = require("config");
 const express = require("express");
 const log = require("./logger");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
 const app = express();
+
+//configuration
+console.log(`Application name ${config.get("name")}`);
+console.log(`Host name=>  ${config.get("mail.host")}`);
+console.log(`password=>  ${config.get("mail.password")}`);
 
 app.use(express.json()); //express.json returns middleware, app.use uses that middleware in the request processing pipeline
 app.use(express.urlencoded({ extended: true }));
