@@ -32,10 +32,7 @@ app.get("/api/courses/:id", (req, res) => {
 //post a course and validate incoming name in the request
 app.post("/api/courses", (req, res) => {
   const { error, value } = validateCourse(req.body);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if (error) return res.status(400).send(error.details[0].message);
 
   const course = {
     id: courses.length + 1,
@@ -51,30 +48,13 @@ app.put("/api/course/:id", (req, res) => {
   console.log("ALL COURSES => ", courses);
   //   const course = courses.find((ele) => ele.id === parseInt(req.params.id));
   const course = findCourse(req.params.id);
-  if (!course) {
-    res.status(404).send("course not found!");
-    return;
-  }
-
-  const { error } = validateCourse(req.body);
-
-  console.log("error on name=> ", error);
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
-
-  course.name = req.body.name;
-  res.send(courses);
+  if (!course) return res.status(404).send("course not found!");
 });
 
 // DELETE request
 app.delete("/api/course/:id", (req, res) => {
   const course = findCourse(req.params.id);
-  if (!course) {
-    res.status(404).send("course not found!");
-    return;
-  }
+  if (!course) return res.status(404).send("course not found!");
 
   courses.splice(courses.indexOf(course), 1);
   res.send(courses);
