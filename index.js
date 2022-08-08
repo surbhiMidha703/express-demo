@@ -24,8 +24,8 @@ app.get("/api/courses/:id", (req, res) => {
   //   res.send(req.query);
   //   res.send(req.params);
 
-  const course = courses.find((ele) => ele.id === parseInt(req.params.id));
-
+  //   const course = courses.find((ele) => ele.id === parseInt(req.params.id));
+  const course = findCourse(req.params.id);
   !course ? res.status(404).send("Course not found!") : res.send(course);
 });
 
@@ -49,7 +49,8 @@ app.post("/api/courses", (req, res) => {
 //Put - update a course
 app.put("/api/course/:id", (req, res) => {
   console.log("ALL COURSES => ", courses);
-  const course = courses.find((ele) => ele.id === parseInt(req.params.id));
+  //   const course = courses.find((ele) => ele.id === parseInt(req.params.id));
+  const course = findCourse(req.params.id);
   if (!course) {
     res.status(404).send("course not found!");
     return;
@@ -67,6 +68,17 @@ app.put("/api/course/:id", (req, res) => {
   res.send(courses);
 });
 
+// DELETE request
+app.delete("/api/course/:id", (req, res) => {
+  const course = findCourse(req.params.id);
+  if (!course) {
+    res.status(404).send("course not found!");
+    return;
+  }
+
+  courses.splice(courses.indexOf(course), 1);
+  res.send(courses);
+});
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
@@ -79,4 +91,8 @@ const validateCourse = (courseNameObj) => {
   });
 
   return schema.validate(courseNameObj);
+};
+
+const findCourse = (reqID) => {
+  return courses.find((ele) => ele.id === parseInt(reqID));
 };
