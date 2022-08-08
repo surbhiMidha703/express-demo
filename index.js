@@ -51,6 +51,34 @@ app.post("/api/courses", (req, res) => {
   res.send(course);
 });
 
+//Put - update a course
+app.put("/api/course/:id", (req, res) => {
+  //   const reqId = req.params.id;
+  //   const reqName = req.body.name;
+
+  console.log("ALL COURSES => ", courses);
+  const course = courses.find((ele) => ele.id === parseInt(req.params.id));
+  if (!course) {
+    res.status(404).send("course not found!");
+    return;
+  }
+
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+
+  const { error, value } = schema.validate(req.body);
+
+  console.log("error on name=> ", error);
+  if (error) {
+    res.status(400).send(error.details[0].message);
+    return;
+  }
+
+  course.name = req.body.name;
+  res.send(courses);
+});
+
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
