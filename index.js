@@ -1,10 +1,10 @@
 const Joi = require("joi");
 const express = require("express");
-
+const log = require("./logger");
 const app = express();
 
 app.use(express.json()); //express.json returns middleware, app.use uses that middleware in the request processing pipeline
-
+app.use(log);
 const courses = [
   { id: 1, name: "maths" },
   { id: 2, name: "english" },
@@ -59,12 +59,8 @@ app.delete("/api/course/:id", (req, res) => {
   courses.splice(courses.indexOf(course), 1);
   res.send(courses);
 });
-//PORT
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`listening on port ${port}...!!`);
-});
 
+//utilities
 const validateCourse = (courseNameObj) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
@@ -76,3 +72,9 @@ const validateCourse = (courseNameObj) => {
 const findCourse = (reqID) => {
   return courses.find((ele) => ele.id === parseInt(reqID));
 };
+
+//PORT
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`listening on port ${port}...!!`);
+});
