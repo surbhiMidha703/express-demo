@@ -4,7 +4,10 @@ const log = require("./logger");
 const app = express();
 
 app.use(express.json()); //express.json returns middleware, app.use uses that middleware in the request processing pipeline
-app.use(log);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+app.use(log); // custom middleware
 const courses = [
   { id: 1, name: "maths" },
   { id: 2, name: "english" },
