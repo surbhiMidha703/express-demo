@@ -31,10 +31,7 @@ app.get("/api/courses/:id", (req, res) => {
 
 //post a course and validate incoming name in the request
 app.post("/api/courses", (req, res) => {
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-  const { value, error } = schema.validate(req.body);
+  const { error, value } = validateCourse(req.body);
   if (error) {
     res.status(400).send(error.details[0].message);
     return;
@@ -42,20 +39,15 @@ app.post("/api/courses", (req, res) => {
 
   const course = {
     id: courses.length + 1,
-    // name: req.body.name,
     name: value.name,
   };
 
   courses.push(course);
-  console.log("courses=> ", courses);
   res.send(course);
 });
 
 //Put - update a course
 app.put("/api/course/:id", (req, res) => {
-  //   const reqId = req.params.id;
-  //   const reqName = req.body.name;
-
   console.log("ALL COURSES => ", courses);
   const course = courses.find((ele) => ele.id === parseInt(req.params.id));
   if (!course) {
@@ -63,11 +55,7 @@ app.put("/api/course/:id", (req, res) => {
     return;
   }
 
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
-
-  const { error, value } = schema.validate(req.body);
+  const { error } = validateCourse(req.body);
 
   console.log("error on name=> ", error);
   if (error) {
@@ -84,3 +72,11 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on port ${port}...!!`);
 });
+
+const validateCourse = (courseNameObj) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+
+  return schema.validate(courseNameObj);
+};
