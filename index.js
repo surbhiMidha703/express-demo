@@ -1,11 +1,17 @@
 const Joi = require("joi");
+
 const express = require("express");
 const log = require("./logger");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
 const app = express();
 
 app.use(express.json()); //express.json returns middleware, app.use uses that middleware in the request processing pipeline
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(morgan("tiny"));
+app.use(helmet());
 
 app.use(log); // custom middleware
 const courses = [
