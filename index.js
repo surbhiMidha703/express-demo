@@ -4,7 +4,8 @@ const express = require("express");
 const log = require("./logger");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
+const startupDebug = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
 const app = express();
 
 //configuration
@@ -18,6 +19,7 @@ app.use(express.static("public"));
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
+  startupDebug("morgan enabled");
 }
 
 app.use(helmet());
