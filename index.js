@@ -8,6 +8,9 @@ const startupDebug = require("debug")("app:startup");
 const dbDebugger = require("debug")("app:db");
 const app = express();
 
+app.set("view engine", "pug"); //
+app.set("views", "./views");
+
 //configuration
 console.log(`Application name ${config.get("name")}`);
 console.log(`Host name=>  ${config.get("mail.host")}`);
@@ -31,7 +34,7 @@ const courses = [
 ];
 
 app.get("/", (req, res) => {
-  res.send("hello world!!!");
+  res.render("index", { title: "my express app", message: "hello" });
 });
 
 app.get("/api/courses", (req, res) => {
