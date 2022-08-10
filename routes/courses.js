@@ -1,14 +1,16 @@
+const Joi = require("joi");
 const express = require("express");
-
 const appRouter = express.Router();
-
+appRouter.use(express.json());
+appRouter.use(express.urlencoded({ extended: true }));
 const courses = [
   { id: 1, name: "maths" },
   { id: 2, name: "english" },
 ];
-
+console.log("hello!!!!");
 appRouter.get("/", (req, res) => {
   // get courses from db
+  console.log("courses getting....");
   res.send(`courses ${JSON.stringify(courses)}`);
 });
 
@@ -55,6 +57,7 @@ appRouter.delete("/:id", (req, res) => {
 
 //utilities
 const validateCourse = (courseNameObj) => {
+  console.log("courseNameObj=> ", courseNameObj);
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
   });

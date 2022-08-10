@@ -1,4 +1,3 @@
-const Joi = require("joi");
 const config = require("config");
 const express = require("express");
 const log = require("./middleware/logger");
@@ -17,7 +16,7 @@ app.set("views", "./views");
 //configuration
 console.log(`Application name ${config.get("name")}`);
 console.log(`Host name=>  ${config.get("mail.host")}`);
-console.log(`password=>  ${config.get("mail.password")}`);
+// console.log(`password=>  ${config.get("mail.password")}`);
 
 app.use("/", home);
 app.use("/api/courses", courses);
